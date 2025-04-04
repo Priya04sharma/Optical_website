@@ -133,3 +133,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'products/')
 LOGIN_REDIRECT_URL = '/'
 
 CART_SESSION_ID = 'cart'
+
+LOGIN_url = 'URL/'
+LOGOUT_REDIRECT_URL='/'

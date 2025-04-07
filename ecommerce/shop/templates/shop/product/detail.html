@@ -1,44 +1,100 @@
 {% extends 'shop/base.html' %}
 {% load static %}
+
 {% block title %}
-    {% if category %}{{ category.name }} {% else %} Products {% endif %}
+    {% if category %}{{ category.name }}{% else %}Product{% endif %}
 {% endblock %}
 
 {% block content %}
-   <div class="container">
-      <div class="row" style="margin-top: 6%">
+<div class="container mt-5">
 
-        <div class="col-sm-8 blog-main">
+    <!-- Breadcrumbs -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-light p-2 rounded">
+            <li class="breadcrumb-item"><a href="{% url 'shop:product_list' %}">Home</a></li>
+            {% if product.category %}
+                <li class="breadcrumb-item"><a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a></li>
+            {% endif %}
+            <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+        </ol>
+    </nav>
 
-          <div class="blog-post">
-              <div class="row">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="col-md-6 text-right">
-                            <img src="{% if product.image %} {{ product.image.url }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="height: 170px; width: auto">
-                        </div>
-                        <div class="col-md-6" style="padding-left: 20px">
-                            <h3>{{ product.name }}</h3>
-                            <h6><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></h6>
-                            <p class="text-muted">Rs. {{ product.price }}</p>
-                           
-                            <form action="{% url 'cart_add' product.id %}" method="post">
+    <!-- Product Section -->
+    <div class="row g-4 align-items-start">
+        
+        <!-- Left-Aligned Product Image -->
+        <div class="col-md-5">
+            <div class="product-card p-3 bg-white border shadow-sm text-center">
+                <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/default.jpg' %}{% endif %}"
+                     alt="{{ product.name }}"
+                     class="product-image w-100"
+                     style="max-height: 350px; object-fit: contain;">
+            </div>
+        </div>
 
-                                {% csrf_token %}
-                                {{ cart_product_form }}
-                                <input type="submit" value="add to cart" class="btn btn-primary">
-                            </form>
-                            <p>{{ product.description|safe|linebreaksbr }}</p>
+        <!-- Product Info -->
+        <div class="col-md-7">
+            <h2>{{ product.name }}</h2>
+            <h6 class="mb-3"><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></h6>
+
+            <!-- Star Ratings -->
+            <div class="mb-2">
+                <span class="text-warning">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+                <small class="text-muted">(12 reviews)</small>
+            </div>
+
+            <!-- Stock Status -->
+            {% if product.stock > 0 %}
+                <span class="badge bg-success mb-2">In Stock</span>
+            {% else %}
+                <span class="badge bg-danger mb-2">Out of Stock</span>
+            {% endif %}
+
+            <!-- Price -->
+            <p class="product-price">Rs. {{ product.price }}</p>
+
+            <!-- Add to Cart Form -->
+            <form action="{% url 'cart_add' product.id %}" method="post" class="mb-3">
+                {% csrf_token %}
+                {{ cart_product_form }}
+                <button type="submit" class="btn btn-primary">Add to Cart</button>
+            </form>
+
+            <!-- Wishlist & Share -->
+            <div class="d-flex gap-2 mb-3">
+                <button class="btn btn-outline-dark btn-sm"><i class="fas fa-heart"></i> Wishlist</button>
+                <button class="btn btn-outline-dark btn-sm"><i class="fas fa-share-alt"></i> Share</button>
+            </div>
+
+            <!-- Description -->
+            <hr>
+            <h5>Description</h5>
+            <p class="mt-2">{{ product.description|safe|linebreaksbr }}</p>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    <div class="mt-5">
+        <h4>Related Products</h4>
+        <div class="row">
+            {% for item in related_products %}
+                <div class="col-md-3 mb-4">
+                    <div class="product-card bg-white border h-100 shadow-sm">
+                        <img src="{% if item.image %}{{ item.image.url }}{% else %}{% static 'img/default.jpg' %}{% endif %}"
+                             class="product-image w-100"
+                             alt="{{ item.name }}">
+                        <div class="p-3">
+                            <a href="{{ item.get_absolute_url }}" class="product-title d-block mb-1">{{ item.name }}</a>
+                            <div class="product-price mb-2">Rs. {{ item.price }}</div>
+                            <a href="{{ item.get_absolute_url }}" class="btn btn-sm btn-outline-dark">View</a>
                         </div>
                     </div>
                 </div>
-              </div>
+            {% empty %}
+                <p class="text-muted">No related products found.</p>
+            {% endfor %}
+        </div>
+    </div>
 
-
-          </div><!-- /.blog-post -->
-
-        </div><!-- /.blog-main -->
-      </div><!-- /.row -->
-
-    </div><!-- /.container -->
+</div>
 {% endblock %}

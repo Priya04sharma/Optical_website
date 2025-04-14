@@ -2,6 +2,24 @@ from django.shortcuts import render, get_object_or_404
 from .models import Category, Product
 from cart.forms import CartAddProductForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
+from django.contrib import messages
+# shop/views.py
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Optional: log the user in after signup
+            return redirect('shop:product_list')  # Redirect to home or desired page
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/signup.html', {'form': form})
 
 def product_list(request, category_slug=None):
     category = None
@@ -27,3 +45,5 @@ def product_detail(request, id, slug):
         'cart_product_form': cart_product_form
     }
     return render(request, 'shop/product/detail.html', context)
+
+

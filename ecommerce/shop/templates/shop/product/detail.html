@@ -54,11 +54,20 @@
             <p class="product-price">Rs. {{ product.price }}</p>
 
             <!-- Add to Cart Form -->
-            <form action="{% url 'cart_add' product.id %}" method="post" class="mb-3">
-                {% csrf_token %}
-                {{ cart_product_form }}
-                <button type="submit" class="btn btn-primary">Add to Cart</button>
-            </form>
+{% if user.is_authenticated %}
+<form action="{% url 'cart_add' product.id %}" method="post" class="mb-3">
+    {% csrf_token %}
+    {{ cart_product_form }}
+    <button type="submit" class="btn btn-primary">Add to Cart</button>
+</form>
+{% else %}
+<p>
+    <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-warning">
+        Login to Add to Cart
+    </a>
+</p>
+{% endif %}
+
 
             <!-- Wishlist & Share -->
             <div class="d-flex gap-2 mb-3">

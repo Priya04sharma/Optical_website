@@ -9,7 +9,7 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="{% url 'shop:product_list' %}" style="color: #ffffff"> Sharma Opticles</a>
+    <!-- <a class="navbar-brand" href="{% url 'shop:product_list' %}" style="color: #ffffff"> Sharma Opticles</a> -->
   </div>
 
   <!-- Collect the nav links, forms, and other content for toggling -->
@@ -28,7 +28,7 @@
             {% else %}
           <li class="divider"></li>
           <li><a href="{% url 'login'%}?next={{request.path}}" style="color: #ffffff">sign in </a></li>
-         <li><a href="#" style="color: #ffffff">sign up</a></li>
+         
         </ul>
          {% endif %}
       </li>

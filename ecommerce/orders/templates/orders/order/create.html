@@ -1,36 +1,128 @@
 {% extends 'shop/base.html' %}
 {% load static %}
 {% block title %}
-    Your Shopping Cart| Checkout
+    Checkout | Your Shopping Cart
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="row" style="margin-top: 6%">
-            <div class="col-md-8">
-                <h4 class="page-header">Checkout</h4>
-                <form action="." method="post">
+<style>
+    .step-nav .nav-link {
+        border-radius: 20px;
+        font-weight: 500;
+        margin-right: 8px;
+    }
+
+    .checkout-card {
+        background: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0, 123, 255, 0.1);
+        padding: 2rem;
+    }
+
+    .checkout-header {
+        font-size: 1.2rem;
+        font-weight: 600;
+        background: #007bff;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px 12px 0 0;
+        margin-bottom: 1rem;
+    }
+
+    .form-control {
+        border-radius: 8px;
+    }
+
+    .btn-blue {
+        background-color: #007bff;
+        color: white;
+        font-weight: 600;
+        padding: 0.5rem 1.5rem;
+        border-radius: 8px;
+        transition: 0.3s;
+    }
+
+    .btn-blue:hover {
+        background-color: #0056b3;
+    }
+
+    .order-summary-box {
+        background-color: #f8f9fa;
+        border-radius: 12px;
+        padding: 1.5rem;
+        border: 1px solid #dee2e6;
+    }
+
+    .order-summary-box h5 {
+        font-weight: 600;
+        color: #007bff;
+    }
+
+    .order-total {
+        font-weight: 700;
+        color: #003366;
+    }
+
+    label {
+        font-weight: 500;
+        color: #333;
+    }
+
+    .checkout-form p {
+        margin-bottom: 1.2rem;
+    }
+</style>
+
+<div class="container py-5">
+    <!-- Step Navigation
+    <ul class="nav nav-pills justify-content-center step-nav mb-4">
+        <li class="nav-item">
+            <span class="nav-link active bg-primary text-white">1. Address</span>
+        </li>
+        <li class="nav-item">
+            <span class="nav-link bg-light text-primary">2. Payment</span>
+        </li>
+        <li class="nav-item">
+            <span class="nav-link bg-light text-primary">3. Review</span>
+        </li>
+    </ul> -->
+
+    <div class="row">
+        <!-- Form Section -->
+        <div class="col-md-7 mb-4">
+            <div class="checkout-card">
+                <div class="checkout-header">Shipping & Billing Details</div>
+                <form action="." method="post" class="checkout-form">
                     {% csrf_token %}
-                    {{ form.as_p }}<br>
-                    <input type="submit" class="btn btn-primary" value="Submit order">
+                    {{ form.as_p }}
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-blue">Place Order</button>
+                    </div>
                 </form>
             </div>
-            <div class="col-md-4">
-                <div class="page-header">
-                    Your Order
+        </div>
+
+        <!-- Summary Section -->
+        <div class="col-md-5">
+            <div class="order-summary-box">
+                <h5>Your Order Summary</h5>
+                <hr>
+                {% for item in cart %}
+                    <p>
+                        <strong>{{ item.product.name }}</strong><br>
+                        {{ item.quantity }} × Rs. {{ item.price }} = Rs. {{ item.total_price }}
+                    </p>
+                {% empty %}
+                    <p>Your cart is empty.</p>
+                {% endfor %}
+                <hr>
+                <div class="d-flex justify-content-between order-total">
+                    <span>Total:</span>
+                    <span>Rs. {{ cart.get_total_price }}</span>
                 </div>
-                <ul class="list-group">
-                    {% for item in cart %}
-                        <li class="list-group-item">
-                        {{ item.quantity }}x {{ item.product.name }}
-                        <span>Rs. {{ item.total_price }}</span>
-                        </li>
-                    {% endfor %}
-
-                <li class="list-group-item active">Total Cost: Rs. {{ cart.get_total_price }}</li>
-                </ul>
-
             </div>
         </div>
     </div>
+</div>
 {% endblock %}

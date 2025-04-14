@@ -1,17 +1,68 @@
 {% extends 'shop/base.html' %}
 {% load static %}
 {% block title %}
-    Your Shopping Cart| Thank you
+    Your Shopping Cart | Thank you
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="row" style="margin-top: 6%">
-            <div class="col-md-8 col-md-offset-2">
-                <h3 class="page-header">Thank You For Shopping With Us
-                </h3>
-                <p>Your order has been successfully completed. Your order number is <strong>{{ order.id }}</strong>.</p>
+<style>
+    .thank-you-container {
+        margin-top: 8%;
+        text-align: center;
+    }
+
+    .thank-you-header {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #007bff;
+        margin-bottom: 1.5rem;
+    }
+
+    .thank-you-message {
+        font-size: 1.2rem;
+        color: #333;
+        line-height: 1.6;
+    }
+
+    .order-number {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #28a745;
+    }
+
+    .thank-you-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 4px 16px rgba(0, 123, 255, 0.1);
+        border: 1px solid #dee2e6;
+    }
+
+    .btn-back-home {
+        margin-top: 2rem;
+        background-color: #007bff;
+        color: white;
+        padding: 0.7rem 2rem;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-back-home:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div class="container">
+    <div class="row thank-you-container">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="thank-you-card">
+                <h3 class="thank-you-header">Thank You For Shopping With Us, {{ user.username }}!</h3>
+                <p class="thank-you-message">Your order has been successfully completed. Your order number is <span class="order-number">{{ order.id }}</span>.</p>
+                <a href="/" class="btn btn-back-home">Back to Home</a>
             </div>
         </div>
     </div>
+</div>
+
 {% endblock %}

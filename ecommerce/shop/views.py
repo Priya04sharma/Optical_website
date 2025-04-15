@@ -9,6 +9,12 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from django.shortcuts import render, get_object_or_404
+from .models import Product
+from cart.forms import CartAddProductForm
+from django.db.models import Avg
+
+
 
 def signup_view(request):
     if request.method == 'POST':
@@ -40,10 +46,20 @@ def product_list(request, category_slug=None):
 def product_detail(request, id, slug):
     product = get_object_or_404(Product, id=id, slug=slug, available=True)
     cart_product_form = CartAddProductForm()
+
+    # Get related products in the same category, excluding the current one
+    related_products = Product.objects.filter(category=product.category).exclude(id=product.id)[:4]
+
+    # Calculate average rating and total reviews
+    avg = product.reviews.aggregate(Avg('rating'))['rating__avg'] or 0
+    review_count = product.reviews.count()
+
     context = {
         'product': product,
-        'cart_product_form': cart_product_form
+        'cart_product_form': cart_product_form,
+        'related_products': related_products,
+        'avg': avg,
+        'review_count': review_count,
     }
     return render(request, 'shop/product/detail.html', context)
-
 

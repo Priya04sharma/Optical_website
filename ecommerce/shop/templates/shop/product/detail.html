@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    {% if category %}{{ category.name }}{% else %}Product{% endif %}
+    {{ product.name }}
 {% endblock %}
 
 {% block content %}
@@ -21,13 +21,13 @@
 
     <!-- Product Section -->
     <div class="row g-4 align-items-start">
-        
-        <!-- Left-Aligned Product Image -->
+
+        <!-- Product Image with Zoom -->
         <div class="col-md-5">
-            <div class="product-card p-3 bg-white border shadow-sm text-center">
+            <div class="product-card p-3 bg-white border shadow-sm text-center position-relative overflow-hidden">
                 <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/default.jpg' %}{% endif %}"
                      alt="{{ product.name }}"
-                     class="product-image w-100"
+                     class="product-image w-100 zoom-image"
                      style="max-height: 350px; object-fit: contain;">
             </div>
         </div>
@@ -35,15 +35,28 @@
         <!-- Product Info -->
         <div class="col-md-7">
             <h2>{{ product.name }}</h2>
-            <h6 class="mb-3"><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></h6>
+            <h6 class="mb-3">
+                <a href="{{ product.category.get_absolute_url }}" class="text-decoration-none text-muted">
+                    {{ product.category }}
+                </a>
+            </h6>
 
-            <!-- Star Ratings -->
-            <div class="mb-2">
-                <span class="text-warning">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
-                <small class="text-muted">(12 reviews)</small>
-            </div>
+           <!-- Dynamic Star Rating -->
+<div class="mb-2">
+    {% with avg_rating=avg|floatformat:0 %}
+        {% for i in "12345" %}
+            {% if forloop.counter <= avg_rating %}
+                <i class="fas fa-star text-warning"></i>
+            {% else %}
+                <i class="far fa-star text-warning"></i>
+            {% endif %}
+        {% endfor %}
+        <small class="text-muted">({{ review_count }} reviews)</small>
+    {% endwith %}
+</div>
 
-            <!-- Stock Status -->
+
+            <!-- Stock -->
             {% if product.stock > 0 %}
                 <span class="badge bg-success mb-2">In Stock</span>
             {% else %}
@@ -51,23 +64,22 @@
             {% endif %}
 
             <!-- Price -->
-            <p class="product-price">Rs. {{ product.price }}</p>
+            <p class="product-price h5">Rs. {{ product.price }}</p>
 
-            <!-- Add to Cart Form -->
-{% if user.is_authenticated %}
-<form action="{% url 'cart_add' product.id %}" method="post" class="mb-3">
-    {% csrf_token %}
-    {{ cart_product_form }}
-    <button type="submit" class="btn btn-primary">Add to Cart</button>
-</form>
-{% else %}
-<p>
-    <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-warning">
-        Login to Add to Cart
-    </a>
-</p>
-{% endif %}
-
+            <!-- Add to Cart -->
+            {% if user.is_authenticated %}
+                <form action="{% url 'cart_add' product.id %}" method="post" class="mb-3">
+                    {% csrf_token %}
+                    {{ cart_product_form }}
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                    </button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-warning">
+                    Login to Add to Cart
+                </a>
+            {% endif %}
 
             <!-- Wishlist & Share -->
             <div class="d-flex gap-2 mb-3">
@@ -82,28 +94,67 @@
         </div>
     </div>
 
-    <!-- Related Products -->
+    <!-- Related Products from Same Category -->
+    {% if related_products %}
     <div class="mt-5">
         <h4>Related Products</h4>
         <div class="row">
             {% for item in related_products %}
+                {% if item.id != product.id and item.category == product.category %}
                 <div class="col-md-3 mb-4">
                     <div class="product-card bg-white border h-100 shadow-sm">
                         <img src="{% if item.image %}{{ item.image.url }}{% else %}{% static 'img/default.jpg' %}{% endif %}"
-                             class="product-image w-100"
+                             class="product-image w-100 p-2"
+                             style="height: 200px; object-fit: contain;"
                              alt="{{ item.name }}">
                         <div class="p-3">
-                            <a href="{{ item.get_absolute_url }}" class="product-title d-block mb-1">{{ item.name }}</a>
-                            <div class="product-price mb-2">Rs. {{ item.price }}</div>
-                            <a href="{{ item.get_absolute_url }}" class="btn btn-sm btn-outline-dark">View</a>
+                            <a href="{{ item.get_absolute_url }}" class="product-title d-block mb-1 text-dark fw-semibold">
+                                {{ item.name|truncatechars:40 }}
+                            </a>
+                            <div class="product-price mb-2 text-muted">Rs. {{ item.price }}</div>
+                            <a href="{{ item.get_absolute_url }}" class="btn btn-sm btn-outline-primary w-100">View</a>
                         </div>
                     </div>
                 </div>
-            {% empty %}
-                <p class="text-muted">No related products found.</p>
+                {% endif %}
             {% endfor %}
         </div>
     </div>
+    {% endif %}
 
 </div>
+
+<!-- Image Zoom Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const img = document.querySelector('.zoom-image');
+        img.addEventListener('mousemove', function (e) {
+            const bounds = img.getBoundingClientRect();
+            const x = ((e.pageX - bounds.left) / bounds.width) * 100;
+            const y = ((e.pageY - bounds.top) / bounds.height) * 100;
+            img.style.transformOrigin = `${x}% ${y}%`;
+            img.style.transform = 'scale(2)';
+        });
+        img.addEventListener('mouseleave', function () {
+            img.style.transform = 'scale(1)';
+            img.style.transformOrigin = 'center';
+        });
+    });
+</script>
+
+<style>
+    .zoom-image {
+        transition: transform 0.3s ease;
+        cursor: zoom-in;
+    }
+    .product-card {
+        border-radius: 10px;
+    }
+    .product-title {
+        font-size: 1rem;
+    }
+    .product-price {
+        font-weight: bold;
+    }
+</style>
 {% endblock %}

@@ -1,0 +1,235 @@
+{% load static %}
+
+<style>
+.hero-section {
+  background-image: url('{% static "img/girl.png" %}');
+  background-size: cover;
+  background-position: center;
+  color: black;
+  font-weight: bolder;
+  padding: 80px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.left-scene, .right-scene {
+  flex: 1;
+  color: black;
+  font-size: 1.2em;
+  padding: 20px;
+  text-align: center;
+}
+
+.main-promotion {
+  text-align: center;
+}
+
+.eyewear-focus {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.discount {
+  font-size: 4em;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.product {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+.details {
+  font-size: 1em;
+  margin-bottom: 30px;
+}
+
+.hero-buttons a {
+  display: inline-block;
+  padding: 12px 25px;
+  text-decoration: none;
+  color: #fff;
+  border-radius: 5px;
+  margin: 0 10px;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+}
+
+.shop-button {
+  background-color: #007bff;
+}
+
+.discover-button {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.shop-button:hover {
+  background-color: #0056b3;
+}
+
+.discover-button:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.feature-boxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.feature-box {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.feature-box:hover {
+  transform: translateY(-5px);
+}
+
+.feature-icon {
+  font-size: 2em;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.feature-text {
+  font-size: 0.9em;
+  color: #555;
+}
+
+@media (max-width: 768px) {
+  .hero-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .left-scene, .right-scene {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+  }
+
+  .main-promotion {
+    margin-bottom: 30px;
+  }
+
+  .discount {
+    font-size: 3em;
+  }
+
+  .product {
+    font-size: 2em;
+  }
+
+  .hero-buttons a {
+    margin: 5px;
+  }
+}
+</style>
+
+<section class="hero-section">
+  <div class="hero-content">
+    <div class="left-scene" id="left-scene-text"></div>
+    <div class="main-promotion" id="main-hero-content">
+      <p class="eyewear-focus" id="hero-focus-text">DEDICATED TO YOUR EYES</p>
+      <h1 class="discount" id="hero-discount">40% OFF</h1>
+      <h2 class="product" id="hero-product">PRESCRIPTION GLASSES</h2>
+      <p class="details" id="hero-details">
+        Includes designer frames + lenses. Select styles only. Discount applied to lenses.
+      </p>
+      <div class="hero-buttons">
+        <a href="#" class="shop-button">SHOP EYEWEAR</a>
+        <a href="#" class="discover-button">DISCOVER MORE</a>
+      </div>
+    </div>
+    <div class="right-scene" id="right-scene-text"></div>
+  </div>
+
+  <div class="feature-boxes">
+    <div
+      class="feature-box"
+      data-bg-image="url('{% static 'img/hero1.png' %}')"
+      data-focus="Our Vision for your eye care Experience seamless"
+      data-discount="website-to-store vision care, "
+      data-product="from ordering online for-in store "
+      data-details=" pick-up to easy exam bookings from any device."
+    >
+      <div class="feature-icon"><i class="fas fa-shopping-bag"></i></div>
+      <p class="feature-text">
+        Shop online and collect in one of our 1000+ stores
+      </p>
+    </div>
+    <div
+      class="feature-box"
+      data-bg-image="url('{% static 'img/hero2.png' %}')"
+      data-focus="Sharma Opticals"
+      data-discount="Buy Now, Pay Later"
+      data-product="get your perfect pair."
+      data-details="Get a significant discount on your second pair of glasses."
+    >
+      <div class="feature-icon"><i class="fas fa-credit-card"></i></div>
+      <p class="feature-text">
+        Buy now, pay later with PayPal, Cash App Pay, or Affirm
+      </p>
+    </div>
+    <div
+      class="feature-box"
+      data-bg-image="url('{% static 'img/hero3.png' %}')"
+      data-focus="Our Services"
+      data-discount="Make the most of your benefits here"
+      data-product="Easily book eye exam from any device"
+      data-details=" Get expert eye care with just a few clicks!"
+    >
+      <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+      <p class="feature-text">
+        We accept most insurance plans, online and in store
+      </p>
+    </div>
+    <div
+      class="feature-box"
+      data-bg-image="url('{% static "img/hero2.png" %}')"
+      data-focus="Customer Care"
+      data-discount="Easy"
+      data-product="Returns & Exchanges"
+      data-details="Enjoy hassle-free returns and exchanges on all purchases."
+    >
+      <div class="feature-icon"><i class="fas fa-truck"></i></div>
+      <p class="feature-text">
+        Free shipping and 30-day returns online and in store
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+// Optional: Add interactivity to update hero section when clicking a feature box
+document.querySelectorAll('.feature-box').forEach(box => {
+  box.addEventListener('click', () => {
+    document.querySelector('.hero-section').style.backgroundImage = box.getAttribute('data-bg-image');
+    document.getElementById('hero-focus-text').textContent = box.getAttribute('data-focus');
+    document.getElementById('hero-discount').textContent = box.getAttribute('data-discount');
+    document.getElementById('hero-product').textContent = box.getAttribute('data-product');
+    document.getElementById('hero-details').textContent = box.getAttribute('data-details');
+  });
+});
+</script>

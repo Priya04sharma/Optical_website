@@ -1,0 +1,158 @@
+{% load static %}
+<style>
+  body {
+    font-family: sans-serif;
+    background: linear-gradient(to bottom, #00ffff 0%, #0033cc 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+  }
+
+  .form-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 600px;
+  }
+
+  .form-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 6px;
+    color: #555;
+    font-weight: bold;
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="tel"],
+  .form-group input[type="email"],
+  .form-group input[type="date"],
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+
+  .form-group textarea {
+    resize: vertical;
+  }
+
+  .submit-button {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+  }
+
+  .submit-button:hover {
+    background-color: #0056b3;
+  }
+
+  @media (max-width: 768px) {
+    .form-container {
+      padding: 20px;
+    }
+
+    .form-group label {
+      font-size: 14px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea,
+    .submit-button {
+      font-size: 14px;
+    }
+  }
+</style>
+
+<div class="form-container">
+  <h2>Book Your Home Eye Test</h2>
+  <form id="eyeTestForm" action="{% url 'shop:submit_appointment' %}" method="POST">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" name="name" placeholder="John Doe" required autofocus />
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Phone Number:</label>
+      <input
+        type="tel"
+        id="phone"
+        name="phone"
+        pattern="[0-9]{10}"
+        placeholder="9876543210"
+        title="Enter a 10-digit mobile number"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email Address:</label>
+      <input type="email" id="email" name="email" placeholder="john@example.com" required />
+    </div>
+
+    <div class="form-group">
+      <label for="address">Full Address:</label>
+      <textarea
+        id="address"
+        name="address"
+        rows="3"
+        placeholder="Flat no, Street, City, State"
+        required
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="preferredDate">Preferred Date:</label>
+      <input type="date" id="preferredDate" name="preferredDate" required min="{{ today_date }}" />
+    </div>
+
+    <div class="form-group">
+      <label for="preferredTime">Preferred Time Slot:</label>
+      <select id="preferredTime" name="preferredTime" required>
+        <option value="" disabled selected>Select Time</option>
+        <option value="10:00 AM - 12:00 PM">10:00 AM - 12:00 PM</option>
+        <option value="12:00 PM - 02:00 PM">12:00 PM - 02:00 PM</option>
+        <option value="02:00 PM - 04:00 PM">02:00 PM - 04:00 PM</option>
+        <option value="04:00 PM - 06:00 PM">04:00 PM - 06:00 PM</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="anyConcerns">Any Specific Eye Concerns?</label>
+      <textarea
+        id="anyConcerns"
+        name="anyConcerns"
+        rows="2"
+        placeholder="Optional: e.g., blurry vision, dry eyes..."
+      ></textarea>
+    </div>
+
+    <button type="submit" class="submit-button">Book Appointment</button>
+  </form>
+</div>

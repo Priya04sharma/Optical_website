@@ -1,0 +1,127 @@
+{% load static %}
+
+<style>
+  .booking-section {
+    background: linear-gradient(to right, #f0f8ff, #e6f7ff);
+    padding: 60px 30px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .booking-section h2,
+  .booking-section h3 {
+    color: #0d2c54;
+  }
+  h2.mt-3,h2.mb-5 {
+    margin-top: -10px; /* Adjusted this value to move the text upwards */
+  }
+
+  .booking-section p {
+    color: #4a4a4a;
+    font-size: 16px;
+  }
+
+  .booking-btn {
+    background-color: #0d6efd;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    display: inline-block;
+  }
+
+  .booking-btn:hover {
+    background-color: #084298;
+    color: white;
+    text-decoration: none;
+  }
+
+  .booking-section .content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .booking-section .left {
+    flex: 1 1 50%;
+    max-width: 50%;
+    padding-right: 20px;
+  }
+
+  .booking-section .right {
+    flex: 1 1 40%;
+    max-width: 40%;
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+
+  .booking-section .right img {
+    max-width: 100%;
+    height: auto;
+    transition: transform 0.3s ease; /* Added transition for smooth scaling */
+  }
+
+  /* Hover effect on image */
+  .booking-section .right:hover img {
+    transform: scale(1.1); /* Slightly increase size */
+  }
+
+  @media (max-width: 768px) {
+    .booking-section .left,
+    .booking-section .right {
+      max-width: 100%;
+      flex: 1 1 100%;
+      padding-right: 0;
+      text-align: center;
+    }
+
+    .booking-section .left {
+      order: 1;
+    }
+
+    .booking-section .right {
+      order: 2;
+      margin-top: 30px;
+    }
+  }
+
+  .muted-text {
+    margin-bottom: 30px;
+  }
+
+  .booking-section::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+</style>
+
+<div class="container-fluid booking-section">
+  <h2 class="text-center mb-5">BOOK EYE TEST AT HOME</h2>
+
+  <div class="content">
+    <!-- Left side: Content -->
+    <div class="left">
+      <h3>Sharma Opticals <span style="color: #007bff">at home</span></h3>
+      <h2 class="mt-3">Book a home eye test</h2>
+      <p class="text-muted muted-text">
+        Get 6 Sigma Eye Test & 150+ trendy frames to choose from
+      </p>
+
+      <a href="{% url 'shop:appointment' %}" class="booking-btn">
+        Book Now
+      </a>
+    </div>
+
+    <!-- Right side: Image -->
+    <div class="right">
+      <img
+        src="{% static 'img/test.jpg' %}"
+        alt="Professional Eye Test Kit"
+      />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,145 @@
+{% load static %}
+<!-- Include Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+<style>
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .about-us-section {
+    padding: 40px 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .about-us-section .container {
+    background-color: #ffffff;
+    width: 80%;
+    border-radius: 12px;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  /* Hover effect for the section box */
+  .about-us-section:hover .container {
+    transform: scale(1.02);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  .about-us-section .text-content {
+    flex: 1;
+  }
+
+  .about-us-section .text-content h2 {
+    color: #0072ff;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 2.5rem;
+    font-weight: 600;
+  }
+
+  .about-us-section .text-content p {
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    font-weight: 400;
+  }
+
+  .about-us-section .read-more-btn {
+    background-color: #0072ff;
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    font-weight: 500;
+  }
+
+  .about-us-section .read-more-btn:hover {
+    background-color: #005ecb;
+  }
+
+  .about-us-section .social-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+  }
+
+  .about-us-section .social-icon {
+    color: #0072ff;
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .about-us-section .social-icon:hover {
+    color: #00c6ff;
+  }
+
+  .about-us-section .image-content {
+    flex: 1;
+  }
+
+  .about-us-section .image-content img {
+    max-width: 100%;
+    height: 400px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Responsive layout */
+  @media (max-width: 768px) {
+    .about-us-section .container {
+      flex-direction: column;
+      text-align: center;
+      width: 90%;
+      padding: 20px;
+    }
+
+    .about-us-section .image-content {
+      order: -1;
+      margin-bottom: 20px;
+    }
+
+    .about-us-section .text-content h2 {
+      font-size: 2rem;
+    }
+
+    .about-us-section .social-icons {
+      justify-content: center;
+    }
+  }
+</style>
+
+<section class="about-us-section">
+  <div class="container">
+    <div class="text-content">
+      <h2>ABOUT US</h2>
+      <h1>Framing Your World with Clarity & Style</h1>
+      <h7>
+        Welcome to Sharma Opticals, your trusted partner in vision care and eyewear fashion. Since our inception, we've been dedicated to offering exceptional eye care solutions, top-quality eyewear, and personalized service for every customer who walks through our doors or visits us online.
+      </h7>
+      <br>
+      <a href="{% url 'shop:aboutdetails' %}" class="booking-btn">
+         read more 
+      </a>
+      <div class="social-icons">
+        <a href="https://www.facebook.com/yourpage" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://twitter.com/yourprofile" class="social-icon"><i class="fab fa-twitter"></i></a>
+        <a href="https://www.instagram.com/yourprofile" class="social-icon"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+    <div class="image-content">
+      <img src="{% static 'img/doctor.png' %}" alt="About Us Image" />
+    </div>
+  </div>
+</section>

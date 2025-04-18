@@ -3,37 +3,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}On-line Shop{% endblock %}</title>
+    <title>{% block title %}Sharma Opticals{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
 {% include 'shop/navbar.html' %}
-{% include 'shop/herosection.html' %}
+{% if request.path == '/' %}
+    {% include 'shop/herosection.html' %}
+
+{% endif %}
 
 
-<div class="container">
-    <div class="row" style="margin-top: 6%">
-         <button class="btn btn-info pull-right">
-            {% with totail_items=cart|length %}
-                {% if cart|length > 0 %}
-                    My Shopping Order:
-                    <a href="{% url 'cart_detail' %}" style="color: #ffffff">
-                        {{ totail_items }} item {{ totail_items|pluralize }}, Rs. {{ cart.get_total_price }}
-                    </a>
-                    {% else %}
-                    Your cart is empty.
-                {% endif %}
-            {% endwith %}
-         </button>
-    </div>
-</div>
 {% block content %}
 
 
 {% endblock %}
-{% include 'shop/booking.html' %}
-{% include 'shop/about.html' %}
+{% if request.path == '/' %}
+    {% include 'shop/booking.html' %}
+    {% include 'shop/about.html' %}
+{% endif %}
 
 {% include 'shop/footer.html' %}
 <script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>

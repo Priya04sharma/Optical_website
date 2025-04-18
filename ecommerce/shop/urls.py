@@ -5,6 +5,11 @@ from .views import signup_view
 app_name = 'shop'
 
 urlpatterns = [
+
+
+
+    path('base/', views.base_view, name='base'),
+
     # User-related
     path('signup/', signup_view, name='signup'),
 
@@ -19,4 +24,5 @@ urlpatterns = [
     path('', views.product_list, name='product_list'),
     path('<slug:category_slug>/', views.product_list, name='product_list_by_category'),
     path('<int:id>/<slug:slug>/', views.product_detail, name='product_detail'),
+
 ]

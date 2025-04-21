@@ -6,19 +6,68 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mt-5">
+<style>
+    .top-space {
+        margin-top: 80px; /* Adjust this based on your navbar height */
+    }
+
+    /* Sidebar Card Styling */
+    .card-category {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Strong shadow */
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Category List Item Styling */
+    .category-item {
+        transition: all 0.3s ease;
+        font-size: 1.8rem;
+        font-weight: 600;
+        border: none;
+    }
+
+    /* Remove underline and style link */
+    .category-link {
+        text-decoration: none !important;
+        color: #333;
+        display: block;
+        width: 100%;
+        transition: all 0.3s ease;
+    }
+
+    /* Hover effect on category items */
+    .category-item:hover {
+        transform: scale(1.03);
+        background-color: #e6f0ff; /* Light blue background */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .category-item:hover .category-link {
+        color: #000; /* Text becomes solid black on hover */
+    }
+
+    /* Active item styling */
+    .category-item.active {
+        background-color: #007bff !important;
+    }
+
+    .category-item.active .category-link {
+        color: #fff !important;
+    }
+</style>
+
+<div class="container {% if category %} top-space {% else %} mt-5 {% endif %}">
     <div class="row">
         <!-- Sidebar (Categories) -->
         <aside class="col-lg-3">
-            <div class="card shadow-sm p-3 mb-4 rounded">
+            <div class="card card-category p-3 mb-4 rounded">
                 <h4 class="text-center fw-bold">Categories</h4>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item {% if not category %} active {% endif %}">
-                        <a href="{% url 'shop:product_list' %}" class="text-decoration-none text-dark">All</a>
+                    <li class="list-group-item category-item {% if not category %} active {% endif %}">
+                        <a href="{% url 'shop:product_list' %}" class="category-link">All</a>
                     </li>
                     {% for c in categories %}
-                    <li class="list-group-item {% if category.slug == c.slug %} active {% endif %}">
-                        <a href="{{ c.get_absolute_url }}" class="text-decoration-none text-dark">{{ c.name }}</a>
+                    <li class="list-group-item category-item {% if category.slug == c.slug %} active {% endif %}">
+                        <a href="{{ c.get_absolute_url }}" class="category-link">{{ c.name }}</a>
                     </li>
                     {% endfor %}
                 </ul>

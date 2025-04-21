@@ -14,6 +14,9 @@ from django.shortcuts import render
 
 
 
+def get_absolute_url(self):
+    return reverse('shop:product_list_by_category', args=[self.slug])
+
 # User signup view
 def signup_view(request):
     if request.method == 'POST':
@@ -63,6 +66,8 @@ def product_detail(request, id, slug):
 def appointment_view(request):
     return render(request, 'shop/appointment.html')
 
+def base_view(request):
+    return render(request, 'shop/base.html')
 
 # Handle appointment form submission
 @csrf_protect

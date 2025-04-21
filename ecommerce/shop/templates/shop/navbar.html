@@ -1,38 +1,153 @@
 {% load static %}
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0px; background-color: #5bcdf9;">
-  <!-- Brand and toggle get grouped for better mobile display -->
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  .custom-navbar {
+    background: linear-gradient(to right, #33ccff, #126297);
+    border: none;
+    height: 60px;
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.30);
+  }
+
+  .custom-navbar .nav > li > a,
+  .custom-navbar .navbar-brand {
+    color: black !important;
+    font-weight: 700;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+  
+
+  .custom-navbar .nav > li > a:hover,
+  .custom-navbar .navbar-brand:hover,
+  .custom-navbar .dropdown-menu > li > a:hover {
+    color: white !important;
+    font-size: 17px;
+  }
+
+  .custom-navbar .dropdown-menu > li > a {
+    color: black !important;
+    transition: all 0.3s ease;
+  }
+
+  .cart-icon-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .cart-count-badge {
+  position: absolute;
+  top: 2px;          /* moved slightly downward */
+  right: 0px;        /* moved slightly leftwards */
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  font-size: 12px;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  border-radius: 50%;
+  text-align: center;
+  border: 1px solid black;
+  animation: pop 0.3s ease;
+}
+
+
+  @keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
+  }
+
+  .cart-link {
+    color: black;
+    font-size: 18px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s ease;
+  }
+
+  .cart-link:hover {
+    transform: scale(1.1);
+    color: white;
+  }
+
+  .navbar-right li button {
+    background-color: transparent;
+    border: none;
+  }
+</style>
+
+<nav class="navbar navbar-default custom-navbar navbar-fixed-top">
   <div class="container-fluid">
-      <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-      <span class="sr-only">Toggle navigation</span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-    <!-- <a class="navbar-brand" href="{% url 'shop:product_list' %}" style="color: #ffffff"> Sharma Opticles</a> -->
-  </div>
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="{% url 'shop:base' %}" class="navbar-brand">Sharma Optical</a>    </div>
 
-  <!-- Collect the nav links, forms, and other content for toggling -->
-  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav">
+        <li><a href="{% url 'shop:base' %}" class="navbar-brand">Home</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Shopping <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="{% url 'shop:product_list' %}" class="text-dark">All</a></li>
+            {% for c in categories %}
+              <li><a href="{{ c.get_absolute_url }}" class="text-dark">{{ c.name }}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
 
-    <ul class="nav navbar-nav navbar-right">
-      <li class="dropdown">
+        <li><a href="{% url 'shop:appointment' %}">Book Appointment</a></li>
+        <li><a href="{% url 'shop:aboutdetails' %}">About Us</a></li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <!-- Cart Icon with Badge -->
+        <li style="margin-right: 10px;">
+          <a href="{% url 'cart_detail' %}" class="cart-link cart-icon-container" data-toggle="tooltip" data-placement="bottom" title="My Cart">
+            <img src="{% static 'img/carticon.png' %}" alt="Cart" style="width:24px; height:24px; margin-right: 4px;">
+            {% with total_items=cart|length %}
+              {% if total_items > 0 %}
+                <span class="cart-count-badge">{{ total_items }}</span>
+              {% endif %}
+            {% endwith %}
+          </a>
+        </li>
+
+        <!-- Sign In / User Dropdown -->
+        <li class="dropdown">
           {% if request.user.is_authenticated %}
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color: #ffffff">{{ request.user.username }}<b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <!-- <li><a href="{% url 'logout'%}?next={{request.path}}">logout</a></li> -->
-          <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-        </form>
-            {% else %}
-          <li class="divider"></li>
-          <li><a href="{% url 'login'%}?next={{request.path}}" style="color: #ffffff">sign in </a></li>
-         
-        </ul>
-         {% endif %}
-      </li>
-    </ul>
-  </div><!-- /.navbar-collapse -->
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ request.user.username }} <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li>
+                <form action="{% url 'logout' %}" method="post" style="margin: 0; padding: 10px;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-link" style="color: #000; text-decoration: none;">Logout</button>
+                </form>
+              </li>
+            </ul>
+          {% else %}
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="{% url 'login' %}?next={{ request.path }}">Sign In</a></li>
+            </ul>
+          {% endif %}
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
+
+<script>
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  });
+  
+</script>

@@ -8,7 +8,7 @@ urlpatterns = [
 
 
 
-    path('base/', views.base_view, name='base'),
+    path('/', views.base_view, name='base'),
 
     # User-related
     path('signup/', signup_view, name='signup'),

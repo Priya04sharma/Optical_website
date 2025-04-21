@@ -14,8 +14,8 @@ from django.shortcuts import render
 
 
 
-def get_absolute_url(self):
-    return reverse('shop:product_list_by_category', args=[self.slug])
+# def get_absolute_url(self):
+#     return reverse('shop:product_list_by_category', args=[self.slug])
 
 # User signup view
 def signup_view(request):

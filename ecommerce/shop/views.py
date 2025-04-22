@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
 from .models import Appointment  # Import the model
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -69,8 +70,7 @@ def appointment_view(request):
 
 def base_view(request):
     return render(request, 'shop/base.html')
-
-@csrf_protect
+@login_required 
 def submit_appointment(request):
     if request.method == 'POST':
         name = request.POST.get('name')

@@ -101,18 +101,18 @@
     <!-- Quick Links -->
     <div class="footer-column">
       <h4>Quick Links</h4>
-      <a href="#">Home</a>
-      <a href="#">About</a>
-      <a href="#">Cart</a>
-      <a href="#">Contact</a>
+      <a href="{% url 'shop:product_list' %}">Home</a>
+      <a href="{% url 'shop:aboutdetails' %}">About</a>
+      <a href="{% url 'cart_detail' %}" >Cart</a>
+      <a href="{% url 'shop:aboutdetails' %}">Contact</a>
     </div>
 
     <div class="footer-column">
       <h4>&nbsp;</h4>
-      <a href="#">Sunglasses</a>
-      <a href="#">Frames</a>
-      <a href="#">Contact Lenses</a>
-      <a href="#">RxLens</a>
+      <a href="{% url 'shop:product_list' %}">Sunglasses</a>
+      <a href="{% url 'shop:product_list' %}">Men</a>
+      <a href="{% url 'shop:product_list' %}">Contact Lenses</a>
+      <a href="{% url 'shop:product_list' %}">Unisex</a>
     </div>
 
     <!-- Contact Info -->
@@ -164,7 +164,7 @@
   </div>
 
   <div class="footer-bottom">
-    Copyright © 2025 THE BEST OPTICS IN QATAR
+    Copyright © 2017 THE BEST OPTICS JAMMU
   </div>
 </footer>
 

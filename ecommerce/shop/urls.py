@@ -8,14 +8,15 @@ urlpatterns = [
 
 
 
-    path('/', views.base_view, name='base'),
+    # path('base/', views.base_view, name='base'),
 
     # User-related
     path('signup/', signup_view, name='signup'),
 
     # Appointment-related
     path('appointment/', views.appointment_view, name='appointment'),
-    path('submit_appointment/', views.submit_appointment, name='submit_appointment'),
+    path('submit-appointment/', views.submit_appointment, name='submit_appointment'),
+    path('thank-you/', views.thank_you, name='thank_you'),
 
     # About Us-related
     path('aboutdetails/', views.about_details, name='aboutdetails'),  # Place this before product URLs

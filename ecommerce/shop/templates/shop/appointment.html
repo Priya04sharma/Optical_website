@@ -156,3 +156,17 @@
     <button type="submit" class="submit-button">Book Appointment</button>
   </form>
 </div>
+
+<script>
+  function validateForm() {
+    const preferredDate = document.getElementById('preferredDate').value;
+    const todayDate = new Date().toISOString().split('T')[0];  // Get current date in 'YYYY-MM-DD' format
+
+    if (preferredDate < todayDate) {
+      alert("You cannot select a past date for the appointment.");
+      return false;  // Prevent form submission
+    }
+
+    return true;  // Allow form submission
+  }
+</script>

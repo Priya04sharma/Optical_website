@@ -1,0 +1,73 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}
+    Appointment Confirmation
+{% endblock %}
+
+{% block content %}
+<style>
+    .thank-you-container {
+        margin-top: 8%;
+        text-align: center;
+    }
+
+    .thank-you-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 2.5rem;
+        max-width: 600px;
+        margin: 0 auto;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e1e1e1;
+    }
+
+    .thank-you-header {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #0c6e7d;
+        margin-bottom: 1rem;
+    }
+
+    .thank-you-message {
+        font-size: 1.1rem;
+        color: #333;
+        line-height: 1.6;
+        margin-bottom: 0.5rem;
+    }
+
+    .booking-id {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #28a745;
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .btn-home {
+        background: linear-gradient(to right, #30CFD0, #330867);
+        color: white;
+        padding: 0.75rem 2rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        transition: 0.3s ease;
+    }
+
+    .btn-home:hover {
+        background: #0c6e7d;
+    }
+</style>
+
+<div class="thank-you-container">
+    <div class="thank-you-card">
+        <h2 class="thank-you-header">Thank You for Booking, {{ appointment.name }}!</h2>
+        <p class="thank-you-message">We have successfully received your home eye test appointment request.</p>
+        <p class="thank-you-message">One of our professionals will reach out to you shortly to confirm your slot.</p>
+        <p class="booking-id">Your Booking Appointment ID: <strong>SOM{{ appointment.id }}</strong></p>
+        <a href="/" class="btn-home">Back to Home</a>
+    </div>
+</div>
+{% endblock %}

@@ -7,15 +7,16 @@ from django.views.decorators.csrf import csrf_protect
 from .models import Category, Product
 from cart.forms import CartAddProductForm
 from django.utils import timezone
-from django.shortcuts import render
-
-
-
+from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_protect
+from django.contrib import messages
+from .models import Appointment  # Import the model
+from django.utils import timezone
 
 
 
 # def get_absolute_url(self):
-#     return reverse('shop:product_list_by_category', args=[self.slug])
+#      return reverse('shop:product_list_by_category', args=[self.slug])
 
 # User signup view
 def signup_view(request):
@@ -69,7 +70,6 @@ def appointment_view(request):
 def base_view(request):
     return render(request, 'shop/base.html')
 
-# Handle appointment form submission
 @csrf_protect
 def submit_appointment(request):
     if request.method == 'POST':
@@ -79,23 +79,32 @@ def submit_appointment(request):
         address = request.POST.get('address')
         preferred_date = request.POST.get('preferredDate')
         preferred_time = request.POST.get('preferredTime')
+        preferred_date = timezone.datetime.strptime(preferred_date, '%Y-%m-%d').date()
         concerns = request.POST.get('anyConcerns')
+        
+        appointment = Appointment.objects.create(
+            name=name,
+            phone=phone,
+            email=email,
+            address=address,
+            preferred_date=preferred_date,
+            preferred_time=preferred_time,
+            concerns=concerns
+        )
 
-        # TODO: Save to DB or email logic
-
-        # Add a flash message
         messages.success(request, "Your appointment has been booked successfully!")
-
-        return redirect('shop:appointment')  # Redirect to appointment page (or thank you page)
+        return redirect('shop:thank_you')  # Redirect to thank you page
     else:
         return HttpResponse("Invalid request method.", status=405)
     
+def thank_you(request):
+    return render(request, 'shop/thank_you.html')
 
 
 
-def your_view(request):
-    today_date = timezone.now().date()
-    return render(request, 'your_template.html', {'today_date': today_date})
+# def your_view(request):
+#     today_date = timezone.now().date()
+#     return render(request, 'your_template.html', {'today_date': today_date})
 
 def about_details(request):
     return render(request, 'shop/aboutdetails.html')

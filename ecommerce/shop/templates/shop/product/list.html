@@ -8,16 +8,14 @@
 {% block content %}
 <style>
     .top-space {
-        margin-top: 80px; /* Adjust this based on your navbar height */
+        margin-top: 80px;
     }
 
-    /* Sidebar Card Styling */
     .card-category {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Strong shadow */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    /* Category List Item Styling */
     .category-item {
         transition: all 0.3s ease;
         font-size: 1.8rem;
@@ -25,7 +23,6 @@
         border: none;
     }
 
-    /* Remove underline and style link */
     .category-link {
         text-decoration: none !important;
         color: #333;
@@ -34,18 +31,16 @@
         transition: all 0.3s ease;
     }
 
-    /* Hover effect on category items */
     .category-item:hover {
         transform: scale(1.03);
-        background-color: #e6f0ff; /* Light blue background */
+        background-color: #e6f0ff;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .category-item:hover .category-link {
-        color: #000; /* Text becomes solid black on hover */
+        color: #000;
     }
 
-    /* Active item styling */
     .category-item.active {
         background-color: #007bff !important;
     }
@@ -54,7 +49,6 @@
         color: #fff !important;
     }
 
-    /* Product Card Improvements */
     .product-card {
         border: none;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -66,36 +60,35 @@
         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
     }
 
-    /* Product Buttons */
-    .btn-card {
-        width: 48%;
-        font-size: 14px;
-        padding: 10px 15px;
-        border-radius: 4px;
-    }
-
-    /* Apply the gradient background to buttons only */
-    .btn-view {
-        background-color: #007bff !important;
-        color: white;
-    }
-
-    .btn-buy {
-        background-color: #007bff !important;
-        color: white;
-    }
-
-    .btn-card:hover {
-        opacity: 0.85;
-    }
-
-    /* Button Container for spacing */
     .btn-container {
         display: flex;
         justify-content: space-between;
+        gap: 10px;
     }
 
-    /* Product Card Text */
+    
+
+    .btn-card {
+    flex: 1;
+    font-size: 14px;
+    padding: 10px 0;
+    border-radius: 4px;
+    white-space: nowrap;
+    text-align: center;
+    }
+
+/* Make the form behave like a button block */
+    .btn-container form {
+    flex: 1;
+    margin: 0;
+    }
+
+/* Ensure buttons inside forms fill width */
+    .btn-container form .btn-card {
+    width: 100%;
+    }
+
+
     .product-name {
         font-size: 1.1rem;
         font-weight: 600;
@@ -107,18 +100,16 @@
         font-weight: 500;
     }
 
-    /* Ensure the image fits well inside the container */
     .card-img-top {
-        height: 200px; /* Adjust height */
-        object-fit: cover; /* Ensure proper cropping of image */
-        width: 100%; /* Ensure the image takes up full width */
+        height: 200px;
+        object-fit: cover;
+        width: 100%;
     }
-
 </style>
 
 <div class="container {% if category %} top-space {% else %} mt-5 {% endif %}">
     <div class="row">
-        <!-- Sidebar (Categories) -->
+        <!-- Sidebar -->
         <aside class="col-lg-3">
             <div class="card card-category p-3 mb-4 rounded">
                 <h4 class="text-center fw-bold">Categories</h4>
@@ -135,16 +126,14 @@
             </div>
         </aside>
 
-        <!-- Product Grid -->
+        <!-- Top 2 Products next to Sidebar -->
         <section class="col-lg-9">
             <div class="row">
-                {% for product in products %}
-                <div class="col-md-4 mb-4">
+                {% for product in products|slice:":2" %}
+                <div class="col-md-6 mb-4">
                     <div class="card product-card shadow-sm border-0 rounded">
                         <a href="{{ product.get_absolute_url }}">
-                            <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/default.jpg' %}{% endif %}" 
-                                 class="card-img-top" 
-                                 alt="Product Image">
+                            <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/default.jpg' %}{% endif %}" class="card-img-top" alt="Product Image">
                         </a>
                         <div class="card-body text-center">
                             <h5 class="product-name">
@@ -153,7 +142,50 @@
                             <p class="product-price">Rs. {{ product.price }}</p>
                             <div class="btn-container">
                                 <a href="{{ product.get_absolute_url }}" class="btn btn-card btn-view">View Details</a>
-                                <a href="{% url 'cart_detail' %}" class="btn btn-card btn-buy">Buy Now</a>
+                                {% if user.is_authenticated %}
+                                <form action="{% url 'cart_add' product.id %}?next={% url 'cart_detail' %}" method="post" style="width: 100%;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="quantity" value="1">
+                                    <input type="hidden" name="override" value="True">
+                                    <button type="submit" class="btn btn-card btn-buy">Buy Now</button>
+                                </form>
+                                {% else %}
+                                <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-card btn-buy">Login to Buy</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Remaining Products in Rows below -->
+        <section class="col-12 mt-4">
+            <div class="row">
+                {% for product in products|slice:"2:" %}
+                <div class="col-md-4 mb-4">
+                    <div class="card product-card shadow-sm border-0 rounded">
+                        <a href="{{ product.get_absolute_url }}">
+                            <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/default.jpg' %}{% endif %}" class="card-img-top" alt="Product Image">
+                        </a>
+                        <div class="card-body text-center">
+                            <h5 class="product-name">
+                                <a href="{{ product.get_absolute_url }}" class="text-decoration-none text-dark">{{ product.name }}</a>
+                            </h5>
+                            <p class="product-price">Rs. {{ product.price }}</p>
+                            <div class="btn-container">
+                                <a href="{{ product.get_absolute_url }}" class="btn btn-card btn-view">View Details</a>
+                                {% if user.is_authenticated %}
+                                <form action="{% url 'cart_add' product.id %}?next={% url 'cart_detail' %}" method="post" style="width: 100%;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="quantity" value="1">
+                                    <input type="hidden" name="override" value="True">
+                                    <button type="submit" class="btn btn-card btn-buy">Buy Now</button>
+                                </form>
+                                {% else %}
+                                <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-card btn-buy">Login to Buy</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

@@ -1,4 +1,7 @@
+
 {% load static %}
+
+
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
@@ -154,6 +157,22 @@
     margin-top: 35px; /* Reduced margin above footer */
     opacity: 0.95;
   }
+  .book-button {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 12px 24px;
+  background-color: #1e3a8a;
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.book-button:hover {
+  background-color: #3b82f6;
+}
+
 
   @media (max-width: 768px) {
     header h1 {
@@ -257,7 +276,9 @@
       <h2>📍 Visit Us or Shop Online</h2>
       <h3><i class="fas fa-map-marker-alt"></i> Sirah Colony Kakryal ,Near SMVDNH-182320</h3>
       <p>Drop by our store or explore our online catalog for the latest collections. At Sharma Opticals, we believe everyone deserves clear vision and stylish confidence — and we’re here to help you achieve both.</p>
+      <a href="{% url 'shop:appointment' %}" class="book-button">Book Now</a>
     </div>
   </div>
 </div>
+{% include 'shop/footer.html' %}
 

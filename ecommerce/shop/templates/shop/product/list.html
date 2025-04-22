@@ -53,6 +53,67 @@
     .category-item.active .category-link {
         color: #fff !important;
     }
+
+    /* Product Card Improvements */
+    .product-card {
+        border: none;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+    }
+
+    .product-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Product Buttons */
+    .btn-card {
+        width: 48%;
+        font-size: 14px;
+        padding: 10px 15px;
+        border-radius: 4px;
+    }
+
+    /* Apply the gradient background to buttons only */
+    .btn-view {
+        background-color: #007bff !important;
+        color: white;
+    }
+
+    .btn-buy {
+        background-color: #007bff !important;
+        color: white;
+    }
+
+    .btn-card:hover {
+        opacity: 0.85;
+    }
+
+    /* Button Container for spacing */
+    .btn-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    /* Product Card Text */
+    .product-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .product-price {
+        color: #28a745;
+        font-size: 1.2rem;
+        font-weight: 500;
+    }
+
+    /* Ensure the image fits well inside the container */
+    .card-img-top {
+        height: 200px; /* Adjust height */
+        object-fit: cover; /* Ensure proper cropping of image */
+        width: 100%; /* Ensure the image takes up full width */
+    }
+
 </style>
 
 <div class="container {% if category %} top-space {% else %} mt-5 {% endif %}">
@@ -79,19 +140,21 @@
             <div class="row">
                 {% for product in products %}
                 <div class="col-md-4 mb-4">
-                    <div class="card shadow-sm border-0 rounded">
+                    <div class="card product-card shadow-sm border-0 rounded">
                         <a href="{{ product.get_absolute_url }}">
                             <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/default.jpg' %}{% endif %}" 
                                  class="card-img-top" 
-                                 alt="Product Image" 
-                                 style="height: 200px; object-fit: cover;">
+                                 alt="Product Image">
                         </a>
                         <div class="card-body text-center">
-                            <h5 class="card-title">
-                                <a href="{{ product.get_absolute_url }}" class="text-decoration-none text-dark fw-bold">{{ product.name }}</a>
+                            <h5 class="product-name">
+                                <a href="{{ product.get_absolute_url }}" class="text-decoration-none text-dark">{{ product.name }}</a>
                             </h5>
-                            <p class="text-muted">Rs. {{ product.price }}</p>
-                            <a href="{{ product.get_absolute_url }}" class="btn btn-primary btn-sm">View Details</a>
+                            <p class="product-price">Rs. {{ product.price }}</p>
+                            <div class="btn-container">
+                                <a href="{{ product.get_absolute_url }}" class="btn btn-card btn-view">View Details</a>
+                                <a href="{% url 'cart_detail' %}" class="btn btn-card btn-buy">Buy Now</a>
+                            </div>
                         </div>
                     </div>
                 </div>

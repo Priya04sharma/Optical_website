@@ -30,5 +30,6 @@ urlpatterns = [
     # In your main urls.py
     path('signup/', signup_view, name='signup'),
 	path('accounts/', include('django.contrib.auth.urls')),
+    path('phonepay/', include('phonepay.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     

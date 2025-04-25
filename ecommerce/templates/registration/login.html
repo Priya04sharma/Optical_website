@@ -76,10 +76,12 @@
     <div class="container d-flex justify-content-center">
         <div class="login-container">
             <h2 class="text-center mb-4">Login</h2>
-            <form method="post">
+            <form method="post" autocomplete="on">
                 {% csrf_token %}
-                <div class="form-group">
+                <div class="form-group">    
                     {{ form.as_p }}
+                    
+                
                 </div>
                 <button type="submit" class="btn btn-primary w-100 mt-3">Login</button>
             </form>

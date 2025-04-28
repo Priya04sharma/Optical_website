@@ -85,6 +85,21 @@
     background-color: transparent;
     border: none;
   }
+  .navbar-brand {
+  font-family: 'Roboto', sans-serif;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #0c6e7d;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  letter-spacing: 2px;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.navbar-brand:hover {
+  color: #ff6347;
+  text-decoration: underline;
+}
+
 </style>
 
 <nav class="navbar navbar-default custom-navbar navbar-fixed-top">
@@ -96,6 +111,7 @@
         <span class="icon-bar"></span>
       </button>
       <a href="{% url 'shop:product_list' %}" class="navbar-brand">Sharma Optical</a>
+
     </div>
 
     <div class="collapse navbar-collapse" id="main-navbar">

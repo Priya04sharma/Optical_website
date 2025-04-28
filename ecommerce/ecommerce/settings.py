@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
+BASE_DIR = Path(__file__).resolve().parent.parent
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',  # Using SQLite

@@ -26,8 +26,8 @@ SECRET_KEY = 'jf$ac236s)uv)6xa&o0#@wmt+37zvlwf=atbi)%et^7=%3#$bb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['Sharma_Opticles.onrender.com' ]
+ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = ['Sharma_Opticles.onrender.com' ]
 
 # Application definition
 

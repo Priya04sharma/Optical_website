@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 from pathlib import Path
-from collections.abc import Mapping as DictMixin
 
 import os
 

@@ -9,15 +9,7 @@
     body {
         background: linear-gradient(to right, #bdc9c9, #efedf1);
         background-attachment: fixed;
-        /* min-height: 100vh;
-    } */
-    }
-    .checkout-container {
-        padding: 40px 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        /* Ensures container uses the full width */
+        min-height: 100vh;
     }
 
     .checkout-card {
@@ -26,9 +18,10 @@
         border-radius: 12px;
         box-shadow: 0 4px 16px rgba(0, 123, 255, 0.1);
         padding: 2rem;
-        width: 100%;
-        max-width: 900px; /* Increased max-width */
+        width: 70%;
+        max-width: 900px;  /* Increased max-width */
         margin-bottom: 30px;
+        margin-left: 180px;
     }
 
     .checkout-header {
@@ -61,7 +54,7 @@
     .order-summary h5 {
         font-weight: 600;
         background: linear-gradient(to right, #30CFD0, #330867);
-        
+        -webkit-background-clip: text;
         color: transparent;
         font-size: 1.25rem;
         margin-bottom: 1rem;
@@ -114,8 +107,6 @@
         overflow: hidden;
         transition: max-height 0.5s ease, opacity 0.5s ease;
     }
-
-
 </style>
 
 <div class="checkout-container">
@@ -171,7 +162,7 @@
             <!-- QR code and Transaction ID fields (hidden initially) -->
             <div id="pay-now-fields" style="max-height: 0; opacity: 0; margin-top: 20px;">
                 <div class="text-center mb-3">
-                    <img src="{% static 'images/qr_code_sample.png' %}" alt="Scan to Pay" style="max-width: 200px;">
+                    <img src="{% static 'img/offer.png' %}" alt="Scan to Pay" style="max-width: 200px;">
                 </div>
                 <div class="mb-3">
                     <label for="transaction_id" class="form-label">Enter Transaction ID</label>

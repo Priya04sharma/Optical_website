@@ -1,1 +1,1 @@
-web: gunicorn Sharma_opticles.wsgi
+web: gunicorn Sharma_Opticles.wsgi:application

@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
-import dj_database_url
+
+from pathlib import Path
 
 import os
 
@@ -26,8 +27,8 @@ SECRET_KEY = 'jf$ac236s)uv)6xa&o0#@wmt+37zvlwf=atbi)%et^7=%3#$bb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-# ALLOWED_HOSTS = ['Sharma_Opticles.onrender.com' ]
+#ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['Sharma_Opticles.onrender.com','*' ]
 
 # Application definition
 
@@ -88,13 +89,14 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
+BASE_DIR = Path(__file__).resolve().parent.parent
 DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3',  # Uses SQLite locally
-        conn_max_age=600  # Keeps database connections alive
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',  # Using SQLite
+        'NAME': BASE_DIR / 'db.sqlite3',         # Database file location
+    }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators

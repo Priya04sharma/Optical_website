@@ -1,12 +1,12 @@
 services:
   - type: web
-    name: Sharma_opticles
+    name: Sharma_Opticles
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn Sharma_opticles.wsgi
+    startCommand: gunicorn Sharma_Opticles.wsgi
     envVars:
       - key: DJANGO_SETTINGS_MODULE
-        value: Sharma_opticles.settings
+        value: Sharma_Opticles.settings
       - key: PYTHON_VERSION
         value: "3.11"
     staticPublishPath: staticfiles

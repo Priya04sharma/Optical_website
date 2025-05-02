@@ -7,15 +7,9 @@
 {% block content %}
 <style>
     body {
-    background: linear-gradient(to right, #bdc9c9, #efedf1);
-    background-attachment: fixed;
-    min-height: 100vh;
-}
-
-    .step-nav .nav-link {
-        border-radius: 20px;
-        font-weight: 500;
-        margin-right: 8px;
+        background: linear-gradient(to right, #bdc9c9, #efedf1);
+        background-attachment: fixed;
+        min-height: 100vh;
     }
 
     .checkout-card {
@@ -24,16 +18,58 @@
         border-radius: 12px;
         box-shadow: 0 4px 16px rgba(0, 123, 255, 0.1);
         padding: 2rem;
+        width: 70%;
+        max-width: 900px;  /* Increased max-width */
+        margin-bottom: 30px;
+        margin-left: 180px;
     }
 
     .checkout-header {
-        font-size: 1.2rem;
-        font-weight: 600;
+        font-size: 1.5rem;
+        font-weight: 700;
         background: linear-gradient(to right, #30CFD0, #330867);
         color: white;
         padding: 0.75rem 1.5rem;
         border-radius: 12px 12px 0 0;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .section-title {
+        font-size: 1.4rem;
+        font-weight: 600;
         margin-bottom: 1rem;
+        color: #330867;
+        text-align: center;
+    }
+
+    .order-summary {
+        background-color: #f8f9fa;
+        border-radius: 12px;
+        padding: 1.5rem;
+        border: 1px solid #dee2e6;
+        margin-top: 2rem;
+    }
+
+    .order-summary h5 {
+        font-weight: 600;
+        background: linear-gradient(to right, #30CFD0, #330867);
+        -webkit-background-clip: text;
+        color: transparent;
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    .order-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .order-total {
+        font-weight: 700;
+        color: #003366;
     }
 
     .form-control {
@@ -53,23 +89,6 @@
         background-color: #0056b3;
     }
 
-    .order-summary-box {
-        background-color: #f8f9fa;
-        border-radius: 12px;
-        padding: 1.5rem;
-        border: 1px solid #dee2e6;
-    }
-
-    .order-summary-box h5 {
-        font-weight: 600;
-        background: linear-gradient(to right, #30CFD0, #330867)
-    }
-
-    .order-total {
-        font-weight: 700;
-        color: #003366;
-    }
-
     label {
         font-weight: 500;
         color: #333;
@@ -78,59 +97,104 @@
     .checkout-form p {
         margin-bottom: 1.2rem;
     }
+
+    .text-end {
+        text-align: right;
+    }
+
+    /* Smooth Slide animation */
+    #pay-now-fields {
+        overflow: hidden;
+        transition: max-height 0.5s ease, opacity 0.5s ease;
+    }
 </style>
 
+<div class="checkout-container">
 
+    <form action="." method="post" class="checkout-form">
+        {% csrf_token %}
 
-<div class="container py-5">
-    <!-- Step Navigation
-    <ul class="nav nav-pills justify-content-center step-nav mb-4">
-        <li class="nav-item">
-            <span class="nav-link active bg-primary text-white">1. Address</span>
-        </li>
-        <li class="nav-item">
-            <span class="nav-link bg-light text-primary">2. Payment</span>
-        </li>
-        <li class="nav-item">
-            <span class="nav-link bg-light text-primary">3. Review</span>
-        </li>
-    </ul> -->
+        <!-- Order Summary Card -->
+        <div class="checkout-card">
+            <div class="checkout-header">Checkout</div>
 
-    <div class="row">
-        <!-- Form Section -->
-        <div class="col-md-7 mb-4">
-            <div class="checkout-card">
-                <div class="checkout-header">Shipping & Billing Details</div>
-                <form action="." method="post" class="checkout-form">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <div class="text-end">
-                        <button type="submit" class="btn btn-blue">Place Order</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Summary Section -->
-        <div class="col-md-5">
-            <div class="order-summary-box">
+            <div class="order-summary">
                 <h5>Your Order Summary</h5>
                 <hr>
                 {% for item in cart %}
-                    <p>
-                        <strong>{{ item.product.name }}</strong><br>
-                        {{ item.quantity }} × Rs. {{ item.price }} = Rs. {{ item.total_price }}
-                    </p>
+                    <div class="order-item">
+                        <div>
+                            <strong>{{ item.product.name }}</strong><br>
+                            <small>{{ item.quantity }} × Rs. {{ item.price }}</small>
+                        </div>
+                        <div>
+                            Rs. {{ item.total_price }}
+                        </div>
+                    </div>
                 {% empty %}
                     <p>Your cart is empty.</p>
                 {% endfor %}
                 <hr>
-                <div class="d-flex justify-content-between order-total">
+                <div class="order-item order-total">
                     <span>Total:</span>
                     <span>Rs. {{ cart.get_total_price }}</span>
                 </div>
             </div>
         </div>
-    </div>
+
+        <!-- Shipping and Billing Card -->
+        <div class="checkout-card">
+            <div class="section-title">Shipping & Billing Details</div>
+            <div class="mb-4">
+                {{ form.as_p }}
+            </div>
+        </div>
+
+        <!-- Payment Options Card -->
+        <div class="checkout-card">
+            <div class="section-title">Payment Options</div>
+
+            <div class="mb-3">
+                <label><input type="radio" name="payment_method" value="Pay Now" required onchange="togglePaymentFields()"> Pay Now (Online)</label><br>
+                <label><input type="radio" name="payment_method" value="COD" required onchange="togglePaymentFields()"> Cash on Delivery (COD)</label>
+            </div>
+
+            <!-- QR code and Transaction ID fields (hidden initially) -->
+            <div id="pay-now-fields" style="max-height: 0; opacity: 0; margin-top: 20px;">
+                <div class="text-center mb-3">
+                    <img src="{% static 'img/offer.png' %}" alt="Scan to Pay" style="max-width: 200px;">
+                </div>
+                <div class="mb-3">
+                    <label for="transaction_id" class="form-label">Enter Transaction ID</label>
+                    <input type="text" name="transaction_id" id="transaction_id" class="form-control" placeholder="Enter your Transaction ID after payment">
+                </div>
+            </div>
+
+            <div class="text-end mt-4">
+                <button type="submit" class="btn btn-blue">Place Order</button>
+            </div>
+
+        </div>
+    </form>
+
 </div>
+
+<!-- Script for Payment Toggle -->
+<script>
+function togglePaymentFields() {
+    const selectedPayment = document.querySelector('input[name="payment_method"]:checked').value;
+    const payNowFields = document.getElementById('pay-now-fields');
+    const transactionInput = document.getElementById('transaction_id');
+
+    if (selectedPayment === "Pay Now") {
+        payNowFields.style.maxHeight = "500px";
+        payNowFields.style.opacity = "1";
+        transactionInput.required = true;
+    } else {
+        payNowFields.style.maxHeight = "0";
+        payNowFields.style.opacity = "0";
+        transactionInput.required = false;
+    }
+}
+</script>
 {% endblock %}

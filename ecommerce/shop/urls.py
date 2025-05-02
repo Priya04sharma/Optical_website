@@ -22,8 +22,8 @@ urlpatterns = [
     path('aboutdetails/', views.about_details, name='aboutdetails'),  # Place this before product URLs
 
     # Product-related
-    path('', views.product_list, name='product_list'),
-    path('<slug:category_slug>/', views.product_list, name='product_list_by_category'),
-    path('<int:id>/<slug:slug>/', views.product_detail, name='product_detail'),
+path('<int:id>/<slug:slug>/', views.product_detail, name='product_detail'),  # Put this first
+path('<slug:category_slug>/', views.product_list, name='product_list_by_category'),
+path('', views.product_list, name='product_list'),
 
 ]

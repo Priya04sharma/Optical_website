@@ -3,11 +3,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.db.models import Index  # <-- Add this import at the top if not present
 
-
-
-
-#for submiit response for apoiintment booking
-
+# For submit response for appointment booking
 class Appointment(models.Model):
     name = models.CharField(max_length=100)
     phone = models.CharField(max_length=15)
@@ -23,12 +19,12 @@ class Appointment(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=150, db_index=True)
-    slug = models.SlugField(max_length=150, unique=True ,db_index=True)
+    slug = models.SlugField(max_length=150, unique=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ('name', )
+        ordering = ('name',)
         verbose_name = 'category'
         verbose_name_plural = 'categories'
 
@@ -37,7 +33,6 @@ class Category(models.Model):
 
     def get_absolute_url(self):
         return reverse('shop:product_list_by_category', args=[self.slug])
-
 
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
@@ -51,19 +46,16 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)
 
-
-class Meta:
-    indexes = [
-        Index(fields=['id', 'slug']),
-    ]
-
+    class Meta:
+        indexes = [
+            Index(fields=['id', 'slug']),
+        ]
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
         return reverse('shop:product_detail', args=[self.id, self.slug])
-    
 
 class Review(models.Model):
     product = models.ForeignKey('Product', related_name='reviews', on_delete=models.CASCADE)
